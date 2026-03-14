@@ -3,7 +3,7 @@
 </template>
 
 <script setup>
-    defineProps(['username '])
+    defineProps(['username'])
 
 </script>
 

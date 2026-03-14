@@ -10,11 +10,11 @@
                         </div>
                         <div class="item-actions">
                             <div class="quantity-selector">
-                                <button class="quantity-change-button">−</button>
-                                <input type="text" class="quantity-input" :value="item.quantity" aria-label="quantity">
-                                <button class="quantity-change-button">+</button>
+                                <button class="quantity-change-button" @click="updateQuantity(item.id, item.quantity - 1)">−</button>
+                                <input type="text" class="quantity-input" :value="item.quantity" aria-label="quantity" @blur ="updateQuantity(item.id, $event.target.value)">
+                                <button class="quantity-change-button" @click="updateQuantity(item.id, item.quantity + 1)">+</button>
                             </div>
-                            <button class="remove-item">✕</button>
+                            <button class="remove-item" @click="$emit('item-remove', item.id)">✕</button>
                         </div>
                     </div>
                 </div>
@@ -23,6 +23,15 @@
 <script setup>
 
  defineProps(['item']) 
+ const emit = defineEmits(['item-remove', 'quantity-update']) 
+
+ function updateQuantity(id, newQuantity) {
+    const parsedQuantity = Number.parseInt(newQuantity, 10)
+    emit('quantity-update', {
+        id,
+        newQuantity: Number.isNaN(parsedQuantity) ? 0 : Math.max(parsedQuantity, 0)
+    })
+ }
 
 </script>
 
